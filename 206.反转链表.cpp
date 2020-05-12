@@ -13,35 +13,38 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+#include <stack>
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
 
         if(head == nullptr)
             return nullptr;
-        ListNode* pNode = head;
-        ListNode* pPre = nullptr;
-        ListNode* pNext = nullptr;
-
+        auto pNode = head;
+        auto pReverse  = pNode;
+        std::stack< ListNode* > stack;
         while(pNode != nullptr)
         {
-
-            pNext = pNode->next;
-            
-            pNode->next = pPre;
-            pPre = pNode;
-            pNode = pNext;
-
-            if(pNode == nullptr)
+            stack.push(pNode);
+            pReverse = pNode;
+            pNode = pNode->next;
+        }
+        
+        auto pHead = pReverse;
+  
+        while(!stack.empty())
+        {    
+            stack.pop();
+            if(!stack.empty())
             {
-                head = pPre;
-                return head;
+                
+                pReverse->next = stack.top();
+                pReverse = pReverse->next;
             }
             
-
         }
-
-        return head;
+        pReverse->next = nullptr;
+        return pHead;
     }
 };
 // @lc code=end
